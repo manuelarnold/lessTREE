@@ -1,11 +1,15 @@
 Package: lessTREE
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Regularize SEM Trees
 Version: 0.1.0
-Author: Who wrote it
+Author: c(person("Manuel Arnold", email="manuel.arnold.1@hu-berlin.de", role=c("aut","cre")), person("Orzek, Jannik", email="orzek@mpib-berlin.mpg.de",role=c("aut")))
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: Sometimes there is too much tree. Use lessTREE, to get less tree.
+Depends:
+    lavaan,
+    lessSEM,
+    tidyverse,
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.2.3

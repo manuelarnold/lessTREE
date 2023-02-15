@@ -3,10 +3,13 @@
 #' Regularize SEM trees fitted with semtree. Requires tidyverse and lessSEM.
 #'
 #' @param tree A semtree object. Only SEM trees fitted with lavaan work.
+#' @param AIC blabla
 #' @return A list.
 #' @export
 
-regularize_semtree <- function(tree) {
+regularize_semtree <- function(tree, penalty = "adaptiveLasso",
+                               lambdas = seq(0, 0.25,length.out = 50),
+                               criterion = "AIC") {
 
   # Extracting the models and their parameters ----
 
@@ -64,42 +67,37 @@ regularize_semtree <- function(tree) {
   }
 
 
-  # Regularization with adaptive lasso ----
+  # Choose penalty ----
 
-  ridge_start <- models |>
-    ridge(regularized = delta_parameters,
-          lambdas = .01,
-          modifyModel = modifyModel(transformations = transformation))
+  if (penalty == "adaptiveLasso") {
 
-  start <- unlist(coef(ridge_start)[,-c(1,2)])
+    ridge_start <- models |>
+      ridge(regularized = delta_parameters,
+            lambdas = .01,
+            modifyModel = modifyModel(transformations = transformation))
 
-  # Define adaptive lasso weights:
-  weights <- 1/abs(start)
+    start <- unlist(coef(ridge_start)[,-c(1,2)])
 
-  ridge_start <- models |>
-    ridge(regularized = delta_parameters,
-          lambdas = .01,
-          modifyModel = modifyModel(transformations = transformation))
-
-  start <- unlist(coef(ridge_start)[,-c(1,2)])
-
-  # Define adaptive lasso weights:
-  weights <- 1/abs(start)
+    # Define adaptive lasso weights:
+    weights <- 1/abs(start)
 
   lasso_fit <- models |>
     adaptiveLasso(regularized = delta_parameters,
-                  lambdas = seq(0,.25,length.out = 50),
+                  lambdas = lambdas,
                   weights = weights,
                   modifyModel = modifyModel(transformations = transformation))
+  }
 
-  lasso_fit <- models |>
-    adaptiveLasso(regularized = delta_parameters,
-                  lambdas = seq(0,.25,length.out = 50),
-                  weights = weights,
-                  modifyModel = modifyModel(transformations = transformation))
+  if (penalty == "lasso") {
+
+    lasso_fit <- models |>
+      lasso(regularized = delta_parameters,
+                    lambdas = lambdas,
+                    modifyModel = modifyModel(transformations = transformation))
+  }
 
   # Extract final parameter values using the AIC
-  df_coef <- as.data.frame(coef(lasso_fit, criterion = "AIC"))
+  df_coef <- as.data.frame(coef(lasso_fit, criterion = criterion))
 
 
   # Make output ----
@@ -127,6 +125,7 @@ regularize_semtree <- function(tree) {
        lambda = df_coef["lambda"],
        alpha = df_coef["alpha"],
        parameter_average = parameter_average,
-       delta = as.data.frame(df_delta))
+       delta = as.data.frame(df_delta),
+       internal = lasso_fit)
 
 }

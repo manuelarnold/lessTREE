@@ -7,9 +7,13 @@ Maintainer: The package maintainer <yourself@somewhere.net>
 Description: Sometimes there is too much tree. Use lessTREE, to get less tree.
 Depends:
     lavaan,
-    lessSEM,
+    lessSEM(>= 1.2.0),
     tidyverse,
+    semtree
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

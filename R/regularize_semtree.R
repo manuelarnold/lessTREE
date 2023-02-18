@@ -76,7 +76,7 @@ regularize_semtree <- function(tree, penalty = "adaptiveLasso",
             lambdas = .01,
             modifyModel = modifyModel(transformations = transformation))
 
-    start <- unlist(coef(ridge_start)[,-c(1,2)])
+    start <- coef(ridge_start)@estimates[1,]
 
     # Define adaptive lasso weights:
     weights <- 1/abs(start)
@@ -97,7 +97,8 @@ regularize_semtree <- function(tree, penalty = "adaptiveLasso",
   }
 
   # Extract final parameter values using the AIC
-  df_coef <- as.data.frame(coef(lasso_fit, criterion = criterion))
+  min_at <- which.min(AIC(lasso_fit)$AIC)
+  df_coef <- as.data.frame(lasso_fit@parameters[min_at,])
 
 
   # Make output ----

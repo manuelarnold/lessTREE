@@ -51,12 +51,13 @@ regularize_semtree <- function(tree, regularized = NULL) {
   cat("\n")
 
   if(any(!is_valid_parameter)){
-    cat(crayon::blue("The following parameters will be estimated group-specific,",
+    cat(crayon::red("✖ "),
+        "The following parameters will be estimated group-specific,",
                      "but cannot be regularized because their",
-                     "names are inconsistent with the naming convention used in lessSEM: "))
-    cat(crayon::blue(paste0(unique(base_parameters[!is_valid_parameter]), collapse = ", ")))
-    cat(crayon::blue("\nAll names must start with letters and special characters (e.g., ",
-                     "~, -, or >) are not allowed."))
+                     "names are inconsistent with the naming convention used in lessSEM: ")
+    cat(crayon::red(paste0(unique(base_parameters[!is_valid_parameter]), collapse = ", ")))
+    cat("\nAll names must start with letters and special characters (e.g., ",
+                     "~, -, or >) are not allowed. Consider changing the names of these parameters.\n")
   }
 
   # Defining the transformations ----

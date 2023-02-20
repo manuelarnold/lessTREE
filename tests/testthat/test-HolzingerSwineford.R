@@ -26,10 +26,13 @@ x9 ~~ d9*x9
 
   ctrl_tree <- semtree.control(method = "score", min.bucket = 10)
 
-  tree <- semtree(model = fit, data = HolzingerSwineford1939[complete.cases(HolzingerSwineford1939),],
+  tree <- semtree(model = fit,
+                  data = HolzingerSwineford1939[complete.cases(HolzingerSwineford1939),],
                   control = ctrl_tree,
                   predictors = c("sex", "school"))
 
-  rtree <- regularize_semtree(tree = tree)
+  rtree <- regularize_semtree(tree = tree) |>
+    tree_lasso(lambdas = seq(0.1,1,.1))
 
+  out <- select_final(rtree, criterion = "BIC")
 })

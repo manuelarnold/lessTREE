@@ -34,6 +34,8 @@ x9 ~~ d9*x9
   rtree <- regularize_semtree(tree = tree) |>
     semtree_lasso(lambdas = seq(0.1,1,.1))
 
+  plot.lessTREE(rtree)
+
   out <- select_final(rtree, criterion = "BIC")
 
   # let's test a model, where some parameters have names that are not
@@ -68,5 +70,7 @@ x9 ~~ d9*x9
     semtree_lasso(lambdas = seq(0.1,1,.1))
 
   out <- select_final(rtree, criterion = "BIC")
+
+  plot.lessTREE(rtree)
 
   })

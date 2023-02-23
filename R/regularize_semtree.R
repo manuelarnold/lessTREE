@@ -98,7 +98,8 @@ regularize_semtree <- function(tree, regularized = NULL) {
     # only those base parameters for regularized parameters; we don't really care about the rest
     base_parameters = unique(base_parameters[is_valid_parameter & regularize]),
     n_leafs = n_leafs,
-    fit = NULL # we will save the fitted lessSEM here
+    lessSEM_object = NULL, # we will save the fitted lessSEM here
+    unregularized_tree = tree
   )
 
   class(base_tree) <- "lessTREE"
@@ -126,7 +127,7 @@ semtree_ridge <- function(base_tree,
                        method = "glmnet",
                        control = controlGlmnet()){
 
-  base_tree$fit <- suppressMessages(lessSEM::ridge(lavaanModel = base_tree$lavaanModel,
+  base_tree$lessSEM_object <- suppressMessages(lessSEM::ridge(lavaanModel = base_tree$lavaanModel,
                                                    regularized = base_tree$regularized,
                                                    lambdas = lambdas,
                                                    modifyModel = base_tree$modifyModel,
@@ -152,7 +153,7 @@ semtree_lasso <- function(base_tree,
                        lambdas,
                        method = "glmnet",
                        control = controlGlmnet()){
-  base_tree$fit <- suppressMessages(lessSEM::lasso(lavaanModel = base_tree$lavaanModel,
+  base_tree$lessSEM_object <- suppressMessages(lessSEM::lasso(lavaanModel = base_tree$lavaanModel,
                                                    regularized = base_tree$regularized,
                                                    lambdas = lambdas,
                                                    method = method,
@@ -195,7 +196,7 @@ semtree_adaptive_lasso <- function(base_tree,
     weights <- 1/abs(start)
   }
 
-  base_tree$fit <- suppressMessages(lessSEM::adaptiveLasso(lavaanModel = base_tree$lavaanModel,
+  base_tree$lessSEM_object <- suppressMessages(lessSEM::adaptiveLasso(lavaanModel = base_tree$lavaanModel,
                                                            regularized = base_tree$regularized,
                                                            lambdas = lambdas,
                                                            weights = weights,
@@ -244,11 +245,11 @@ select_final <- function(lessTREE, criterion){
 
   # Extract final parameter values using the AIC or BIC
   if(criterion == "AIC")
-    min_at <- which.min(AIC(lessTREE$fit)$AIC)
+    min_at <- which.min(AIC(lessTREE$lessSEM_object)$AIC)
   if(criterion == "BIC")
-    min_at <- which.min(BIC(lessTREE$fit)$BIC)
+    min_at <- which.min(BIC(lessTREE$lessSEM_object)$BIC)
 
-  df_coef <- as.data.frame(lessTREE$fit@parameters[min_at,])
+  df_coef <- as.data.frame(lessTREE$lessSEM_object@parameters[min_at,])
 
   # Make output ----
 
@@ -268,7 +269,7 @@ select_final <- function(lessTREE, criterion){
     mutate(leaf = parse_number(par_leaf)) |>
     select(leaf, parameter, delta)
 
-  list(n_par = BIC(lessTREE$fit)$nonZeroParameters[min_at],
+  list(n_par = BIC(lessTREE$lessSEM_object)$nonZeroParameters[min_at],
        n_leafs = lessTREE$n_leafs,
        lambda = df_coef["lambda"],
        alpha = df_coef["alpha"],

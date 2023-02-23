@@ -9,10 +9,10 @@ get_partition(tree, covariates, leafs = FALSE)
 \arguments{
 \item{tree}{A semtree object. Only SEM trees fitted with lavaan work.}
 
+\item{covariates}{A data frame with covariates and ID variables.}
+
 \item{leafs}{logical value; indicating whether only data from the leaf nodes
 is to be extracted.}
-
-\item{covariates.}{A data frame with covariates and ID variables.}
 }
 \value{
 A list.

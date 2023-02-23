@@ -108,7 +108,7 @@ regularize_semtree <- function(tree, regularized = NULL) {
 }
 
 
-#' tree_ridge
+#' semtree_ridge
 #'
 #' regularize tree with ridge penalty
 #'
@@ -121,7 +121,7 @@ regularize_semtree <- function(tree, regularized = NULL) {
 #' the controlIsta and controlGlmnet functions. See ?controlIsta and ?controlGlmnet for more details.
 #' @return regularized SEM-tree
 #' @export
-tree_ridge <- function(base_tree,
+semtree_ridge <- function(base_tree,
                        lambdas,
                        method = "glmnet",
                        control = controlGlmnet()){
@@ -135,7 +135,7 @@ tree_ridge <- function(base_tree,
   return(base_tree)
 }
 
-#' tree_lasso
+#' semtree_lasso
 #'
 #' regularize tree with ridge penalty
 #'
@@ -148,7 +148,7 @@ tree_ridge <- function(base_tree,
 #' the controlIsta and controlGlmnet functions. See ?controlIsta and ?controlGlmnet for more details.
 #' @return regularized SEM-tree
 #' @export
-tree_lasso <- function(base_tree,
+semtree_lasso <- function(base_tree,
                        lambdas,
                        method = "glmnet",
                        control = controlGlmnet()){
@@ -161,7 +161,7 @@ tree_lasso <- function(base_tree,
   return(base_tree)
 }
 
-#' tree_adaptive_lasso
+#' semtree_adaptive_lasso
 #'
 #' regularize tree with ridge penalty
 #'
@@ -176,7 +176,7 @@ tree_lasso <- function(base_tree,
 #' the controlIsta and controlGlmnet functions. See ?controlIsta and ?controlGlmnet for more details.
 #' @return regularized SEM-tree
 #' @export
-tree_adaptive_lasso <- function(base_tree,
+semtree_adaptive_lasso <- function(base_tree,
                                 lambdas,
                                 weights = NULL,
                                 method = "glmnet",
@@ -204,7 +204,7 @@ tree_adaptive_lasso <- function(base_tree,
   return(base_tree)
 }
 
-#' tree_mixed_penalty
+#' semtree_adaptive_lasso
 #'
 #' regularize tree with mixed penalty. See ?lessSEM::mixedPenalty for more details.
 #'
@@ -213,7 +213,7 @@ tree_adaptive_lasso <- function(base_tree,
 #' the controlIsta and controlGlmnet functions. See ?controlIsta and ?controlGlmnet for more details.
 #' @return regularized SEM-tree
 #' @export
-tree_mixed_penalty <- function(base_tree,
+semtree_adaptive_lasso <- function(base_tree,
                                control = controlIsta()){
   return(
     lessSEM::mixedPenalty(lavaanModel = base_tree$lavaanModel,

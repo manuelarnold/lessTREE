@@ -32,7 +32,7 @@ x9 ~~ d9*x9
                   predictors = c("sex", "school"))
 
   rtree <- regularize_semtree(tree = tree) |>
-    tree_lasso(lambdas = seq(0.1,1,.1))
+    semtree_lasso(lambdas = seq(0.1,1,.1))
 
   out <- select_final(rtree, criterion = "BIC")
 
@@ -65,7 +65,7 @@ x9 ~~ d9*x9
                   predictors = c("sex", "school"))
 
   rtree <- regularize_semtree(tree = tree) |>
-    tree_lasso(lambdas = seq(0.1,1,.1))
+    semtree_lasso(lambdas = seq(0.1,1,.1))
 
   out <- select_final(rtree, criterion = "BIC")
 

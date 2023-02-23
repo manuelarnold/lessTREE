@@ -4,10 +4,13 @@
 \alias{regularize_semtree}
 \title{Regularize SEM Trees}
 \usage{
-regularize_semtree(tree)
+regularize_semtree(tree, regularized = NULL)
 }
 \arguments{
 \item{tree}{A semtree object. Only SEM trees fitted with lavaan work.}
+
+\item{regularized}{optional: Select the parameters that should be regularized.
+If set to NULL, all parameters with user-defined names will be regularized.}
 }
 \value{
 A list.

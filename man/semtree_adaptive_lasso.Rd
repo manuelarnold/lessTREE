@@ -4,15 +4,16 @@
 \alias{semtree_adaptive_lasso}
 \title{semtree_adaptive_lasso}
 \usage{
-semtree_adaptive_lasso(base_tree, control = controlIsta())
-
-semtree_adaptive_lasso(base_tree, control = controlIsta())
+semtree_adaptive_lasso(
+  base_tree,
+  lambdas,
+  weights = NULL,
+  method = "glmnet",
+  control = controlGlmnet()
+)
 }
 \arguments{
 \item{base_tree}{object returned by the regularize_tree()-function}
-
-\item{control}{used to control the optimizer. This element is generated with
-the controlIsta and controlGlmnet functions. See ?controlIsta and ?controlGlmnet for more details.}
 
 \item{lambdas}{numeric vector: values for the tuning parameter lambda}
 
@@ -22,14 +23,13 @@ construct weights based on a ridge regularized model.}
 \item{method}{which optimizer should be used? Currently implemented are ista
 and glmnet. With ista, the control argument can be used to switch to related
 procedures (currently gist).}
+
+\item{control}{used to control the optimizer. This element is generated with
+the controlIsta and controlGlmnet functions. See ?controlIsta and ?controlGlmnet for more details.}
 }
 \value{
-regularized SEM-tree
-
 regularized SEM-tree
 }
 \description{
 regularize tree with ridge penalty
-
-regularize tree with mixed penalty. See ?lessSEM::mixedPenalty for more details.
 }

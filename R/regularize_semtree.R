@@ -53,11 +53,11 @@ regularize_semtree <- function(tree, regularized = NULL) {
   if(any(!is_valid_parameter)){
     cat(crayon::red("✖ "),
         "The following parameters will be estimated group-specific,",
-                     "but cannot be regularized because their",
-                     "names are inconsistent with the naming convention used in lessSEM: ")
+        "but cannot be regularized because their",
+        "names are inconsistent with the naming convention used in lessSEM: ")
     cat(crayon::red(paste0(unique(base_parameters[!is_valid_parameter]), collapse = ", ")))
     cat("\nAll names must start with letters and special characters (e.g., ",
-                     "~, -, or >) are not allowed. Consider changing the names of these parameters.\n")
+        "~, -, or >) are not allowed. Consider changing the names of these parameters.\n")
   }
 
   # Defining the transformations ----
@@ -123,15 +123,15 @@ regularize_semtree <- function(tree, regularized = NULL) {
 #' @return regularized SEM-tree
 #' @export
 semtree_ridge <- function(base_tree,
-                       lambdas,
-                       method = "glmnet",
-                       control = controlGlmnet()){
+                          lambdas,
+                          method = "glmnet",
+                          control = controlGlmnet()){
 
   base_tree$lessSEM_object <- suppressMessages(lessSEM::ridge(lavaanModel = base_tree$lavaanModel,
-                                                   regularized = base_tree$regularized,
-                                                   lambdas = lambdas,
-                                                   modifyModel = base_tree$modifyModel,
-                                                   control = control))
+                                                              regularized = base_tree$regularized,
+                                                              lambdas = lambdas,
+                                                              modifyModel = base_tree$modifyModel,
+                                                              control = control))
 
   return(base_tree)
 }
@@ -150,15 +150,15 @@ semtree_ridge <- function(base_tree,
 #' @return regularized SEM-tree
 #' @export
 semtree_lasso <- function(base_tree,
-                       lambdas,
-                       method = "glmnet",
-                       control = controlGlmnet()){
+                          lambdas,
+                          method = "glmnet",
+                          control = controlGlmnet()){
   base_tree$lessSEM_object <- suppressMessages(lessSEM::lasso(lavaanModel = base_tree$lavaanModel,
-                                                   regularized = base_tree$regularized,
-                                                   lambdas = lambdas,
-                                                   method = method,
-                                                   control = control,
-                                                   modifyModel = base_tree$modifyModel))
+                                                              regularized = base_tree$regularized,
+                                                              lambdas = lambdas,
+                                                              method = method,
+                                                              control = control,
+                                                              modifyModel = base_tree$modifyModel))
   return(base_tree)
 }
 
@@ -178,10 +178,10 @@ semtree_lasso <- function(base_tree,
 #' @return regularized SEM-tree
 #' @export
 semtree_adaptive_lasso <- function(base_tree,
-                                lambdas,
-                                weights = NULL,
-                                method = "glmnet",
-                                control = controlGlmnet()){
+                                   lambdas,
+                                   weights = NULL,
+                                   method = "glmnet",
+                                   control = controlGlmnet()){
 
   if(is.null(weights)){
     # we can find some approximate weights using a ridge penalty
@@ -197,30 +197,12 @@ semtree_adaptive_lasso <- function(base_tree,
   }
 
   base_tree$lessSEM_object <- suppressMessages(lessSEM::adaptiveLasso(lavaanModel = base_tree$lavaanModel,
-                                                           regularized = base_tree$regularized,
-                                                           lambdas = lambdas,
-                                                           weights = weights,
-                                                           modifyModel = base_tree$modifyModel))
+                                                                      regularized = base_tree$regularized,
+                                                                      lambdas = lambdas,
+                                                                      weights = weights,
+                                                                      modifyModel = base_tree$modifyModel))
 
   return(base_tree)
-}
-
-#' semtree_adaptive_lasso
-#'
-#' regularize tree with mixed penalty. See ?lessSEM::mixedPenalty for more details.
-#'
-#' @param base_tree object returned by the regularize_tree()-function
-#' @param control	used to control the optimizer. This element is generated with
-#' the controlIsta and controlGlmnet functions. See ?controlIsta and ?controlGlmnet for more details.
-#' @return regularized SEM-tree
-#' @export
-semtree_adaptive_lasso <- function(base_tree,
-                               control = controlIsta()){
-  return(
-    lessSEM::mixedPenalty(lavaanModel = base_tree$lavaanModel,
-                          modifyModel = base_tree$modifyModel,
-                          control = control)
-  )
 }
 
 #' print.lessTREE
